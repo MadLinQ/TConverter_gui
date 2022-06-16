@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace TConverter_gui
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             InitializeComponent();
         }
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -18,21 +19,19 @@ namespace TConverter_gui
         }
         private void FahreheitEdit_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (float.TryParse(FahreheitEdit.Text, out float fahrenheit) || FahreheitEdit.Text == "-")
+            if (float.TryParse(FahreheitEdit.Text, out var fahrenheit) || FahreheitEdit.Text == "-")
             {
-                if (FahreheitEdit.IsSelectionActive)
+                if (!FahreheitEdit.IsSelectionActive) return;
+                CelsiusEdit.ToolTip = null;
+                var result = (fahrenheit - 32) * 5 / 9;
+                if (Math.Round(result, 1) < -273.15)
                 {
-                    CelsiusEdit.ToolTip = null;
-                    float result = (fahrenheit - 32) * 5 / 9;
-                    if (Math.Round(result, 1) < -273.15)
-                    {
-                        FahreheitEdit.Clear();
-                        CelsiusEdit.ToolTip = "Temperature below absolute zero";
-                    }
-                    else
-                    {
-                        CelsiusEdit.Text = Convert.ToString(Math.Round(result, 1));
-                    }
+                    FahreheitEdit.Clear();
+                    CelsiusEdit.ToolTip = "Temperature below absolute zero";
+                }
+                else
+                {
+                    CelsiusEdit.Text = Convert.ToString(Math.Round(result, 1), CultureInfo.CurrentCulture);
                 }
             }
             else
@@ -51,21 +50,19 @@ namespace TConverter_gui
         }
         private void CelsiusEdit_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (float.TryParse(CelsiusEdit.Text, out float celsius) || CelsiusEdit.Text == "-")
+            if (float.TryParse(CelsiusEdit.Text, out var celsius) || CelsiusEdit.Text == "-")
             {
-                if (CelsiusEdit.IsSelectionActive)
+                if (!CelsiusEdit.IsSelectionActive) return;
+                FahreheitEdit.ToolTip = null;
+                var result = celsius * 9 / 5 + 32;
+                if (Math.Round(result, 1) < -459.67)
                 {
-                    FahreheitEdit.ToolTip = null;
-                    float result = (celsius * 9 / 5) + 32;
-                    if (Math.Round(result, 1) < -459.67)
-                    {
-                        CelsiusEdit.Clear();
-                        FahreheitEdit.ToolTip = "Temperature below absolute zero";
-                    }
-                    else
-                    {
-                        FahreheitEdit.Text = Convert.ToString(Math.Round(result, 1));
-                    }
+                    CelsiusEdit.Clear();
+                    FahreheitEdit.ToolTip = "Temperature below absolute zero";
+                }
+                else
+                {
+                    FahreheitEdit.Text = Convert.ToString(Math.Round(result, 1), CultureInfo.CurrentCulture);
                 }
             }
             else
