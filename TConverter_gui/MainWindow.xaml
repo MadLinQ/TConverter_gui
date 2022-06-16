@@ -55,8 +55,7 @@
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              Background="MediumPurple"
                              TextChanged="CelsiusEdit_TextChanged"
-                             Cursor="Arrow"
-                             MouseEnter="CelsiusEdit_MouseEnter"/>
+                             Cursor="Arrow"/>
                              
                 </Grid>
                 <Grid Margin="0 0 0 0" Cursor="Hand">

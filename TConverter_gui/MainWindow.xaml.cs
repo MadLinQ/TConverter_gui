@@ -68,9 +68,5 @@ namespace TConverter_gui
         {
             DragMove();
         }
-        private void CelsiusEdit_MouseEnter(object sender, MouseEventArgs e)
-        {
-            CelsiusEdit.SelectAll();
-        }
     }
 }
